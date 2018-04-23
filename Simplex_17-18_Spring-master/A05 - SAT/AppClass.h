@@ -12,11 +12,15 @@ Date: 2017/06
 
 #include "MyRigidBody.h"
 
+#include "MyEntityManager.h"
+
 namespace Simplex
 {
 	//Adding Application to the Simplex namespace
 class Application
 {
+	MyEntityManager* m_pEntityMngr = nullptr;
+	uint m_uObjects = 0;
 	vector3 m_v3Creeper; //position of the creeper
 	Model* m_pCreeper = nullptr; //model to display
 	Model* m_pSteve = nullptr; //model to display

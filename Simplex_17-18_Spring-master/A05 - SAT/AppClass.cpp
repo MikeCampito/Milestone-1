@@ -13,6 +13,9 @@ void Application::InitVariables(void)
 
 	m_pLightMngr->SetPosition(vector3(0.0f, 3.0f, 13.0f), 1); //set the position of first light(0 is reserved for global light)
 
+	//intializes entity manager breaks with out this
+	m_pEntityMngr = MyEntityManager::GetInstance();
+
 	//creeper
 	m_pCreeper = new Model();
 	m_pCreeper->Load("Minecraft\\Creeper.obj");
@@ -22,6 +25,26 @@ void Application::InitVariables(void)
 	m_pSteve = new Model();
 	m_pSteve->Load("Minecraft\\Steve.obj");
 	m_pSteveRB = new MyRigidBody(m_pSteve->GetVertexList());
+
+	//sets amount of fish to spawn
+	uint uInstances = 30;
+
+	int nSquare = static_cast<int>(std::sqrt(uInstances));
+	m_uObjects = nSquare * nSquare;
+	uint uIndex = -1;
+	//spawns the fish that are cows
+	for (int i = 0; i < nSquare; i++)
+	{
+		for (int j = 0; j < nSquare; j++)
+		{
+			uIndex++;
+			m_pEntityMngr->AddEntity("Minecraft\\Cow.obj");
+			vector3 v3Position = vector3(glm::sphericalRand(34.0f).x,0,glm::sphericalRand(34.0f).z);
+			matrix4 m4Position = glm::translate(v3Position);
+			m_pEntityMngr->SetModelMatrix(m4Position);
+		}
+	}
+	m_pEntityMngr->Update();
 }
 void Application::Update(void)
 {
@@ -33,6 +56,12 @@ void Application::Update(void)
 
 	//Is the first person camera active?
 	CameraRotation();
+	
+	//updates game
+	m_pEntityMngr->Update();
+
+	//Add objects to render list
+	m_pEntityMngr->AddEntityToRenderList(-1, true);
 
 	//Set model matrix to the creeper
 	matrix4 mCreeper = glm::translate(m_v3Creeper) * ToMatrix4(m_qCreeper) * ToMatrix4(m_qArcBall);
