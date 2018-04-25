@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{44D2C07B-798D-461B-9019-DFB240593888}</ProjectGuid>
+    <ProjectGuid>{06310EC7-808C-429B-88A6-16AB70D2DA5E}</ProjectGuid>
     <RootNamespace>A06 - Octree</RootNamespace>
-    <ProjectName>A06 - Octree</ProjectName>
+    <ProjectName>Nick Octree</ProjectName>
     <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

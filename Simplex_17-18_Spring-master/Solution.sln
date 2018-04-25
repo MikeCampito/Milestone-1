@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Exercises", "Exercises", "{A7E7DB91-6013-4894-B0A8-C254F53E4940}"
 EndProject
@@ -109,6 +109,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Exams", "Exams", "{36C376CD-466D-4F60-9C34-3192331D7063}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "C17_RigidBodyPt0", "C17_RigidBodyPt0\C17_RigidBodyPt0.vcxproj", "{D9FF59DA-07A5-475D-8B11-C70D8891576E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "A06 - Octree", "Nick Octree\A06 - Octree.vcxproj", "{06310EC7-808C-429B-88A6-16AB70D2DA5E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -300,6 +302,10 @@ Global
 		{D9FF59DA-07A5-475D-8B11-C70D8891576E}.Debug|x86.Build.0 = Debug|Win32
 		{D9FF59DA-07A5-475D-8B11-C70D8891576E}.Release|x86.ActiveCfg = Release|Win32
 		{D9FF59DA-07A5-475D-8B11-C70D8891576E}.Release|x86.Build.0 = Release|Win32
+		{06310EC7-808C-429B-88A6-16AB70D2DA5E}.Debug|x86.ActiveCfg = Debug|Win32
+		{06310EC7-808C-429B-88A6-16AB70D2DA5E}.Debug|x86.Build.0 = Debug|Win32
+		{06310EC7-808C-429B-88A6-16AB70D2DA5E}.Release|x86.ActiveCfg = Release|Win32
+		{06310EC7-808C-429B-88A6-16AB70D2DA5E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
