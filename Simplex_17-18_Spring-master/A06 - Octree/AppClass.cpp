@@ -88,3 +88,13 @@ void Application::Release(void)
 	//release GUI
 	ShutdownGUI();
 }
+
+
+void Simplex::Application::ThrowNet(void)
+{
+	printf("Net Thrown");
+	vector3 startPos = this->m_pCameraMngr->GetPosition();
+	m_pEntityMngr->AddEntity("Minecraft\\Net.obj");
+	matrix4 m4Position = glm::translate(startPos);
+	m_pEntityMngr->SetModelMatrix(m4Position);
+}

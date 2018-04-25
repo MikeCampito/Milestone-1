@@ -28,6 +28,11 @@ namespace Simplex
 		bool displayLeafs = false;
 
 
+		//Net throw variables
+		bool netThrown = false;
+		vector3 netSize = vector3(50, 50, 50);
+
+
 	private:
 		String m_sProgrammer = "Alberto Bobadilla - labigm@rit.edu"; //programmer
 
@@ -176,6 +181,9 @@ namespace Simplex
 		OUTPUT: ---
 		*/
 		void ReleaseControllers(void);
+		/*
+		*/
+		void ThrowNet(void);
 #pragma endregion
 
 #pragma region Application Controls
