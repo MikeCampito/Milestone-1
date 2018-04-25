@@ -10,11 +10,9 @@ void Application::InitVariables(void)
 
 	m_pLightMngr->SetPosition(vector3(0.0f, 3.0f, 13.0f), 1); //set the position of first light (0 is reserved for ambient light)
 
-#ifdef DEBUG
-	uint uInstances = 900;
-#else
-	uint uInstances = 1849;
-#endif
+
+	uint uInstances = 200;
+
 	int nSquare = static_cast<int>(std::sqrt(uInstances));
 	m_uObjects = nSquare * nSquare;
 	uint uIndex = -1;
@@ -23,8 +21,8 @@ void Application::InitVariables(void)
 		for (int j = 0; j < nSquare; j++)
 		{
 			uIndex++;
-			m_pEntityMngr->AddEntity("Minecraft\\Cube.obj");
-			vector3 v3Position = vector3(glm::sphericalRand(34.0f));
+			m_pEntityMngr->AddEntity("Minecraft\\Cow.obj");
+			vector3 v3Position = vector3(glm::sphericalRand(34.0f).x,0,glm::sphericalRand(34.0f).z);
 			matrix4 m4Position = glm::translate(v3Position);
 			m_pEntityMngr->SetModelMatrix(m4Position);
 		}
@@ -36,6 +34,28 @@ void Application::Update(void)
 {
 	//Update the system so it knows how much time has passed since the last call
 	m_pSystem->Update();
+
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num9)) //I am currently pressing the Num9 
+	{
+		uint uInstances = 1000;
+
+		int nSquare = static_cast<int>(std::sqrt(uInstances));
+		m_uObjects = nSquare * nSquare;
+		uint uIndex = -1;
+		for (int i = 0; i < nSquare; i++)
+		{
+			for (int j = 0; j < nSquare; j++)
+			{
+				uIndex++;
+				m_pEntityMngr->AddEntity("Minecraft\\Cow.obj");
+				vector3 v3Position = vector3(glm::sphericalRand(34.0f).x, 0, glm::sphericalRand(34.0f).z);
+				matrix4 m4Position = glm::translate(v3Position);
+				m_pEntityMngr->SetModelMatrix(m4Position);
+			}
+		}
+	}
+
 
 	//Is the ArcBall active?
 	ArcBall();
