@@ -4,15 +4,17 @@ void Application::InitVariables(void)
 {
 	//Set the position and target of the camera
 	m_pCameraMngr->SetPositionTargetAndUp(
-		vector3(0.0f, 0.0f, 100.0f), //Position
-		vector3(0.0f, 0.0f, 99.0f),	//Target
+		vector3(0.0f, 2.0f, 100.0f), //Position
+		vector3(0.0f, 2.0f, 99.0f),	//Target
 		AXIS_Y);					//Up
 
 	m_pLightMngr->SetPosition(vector3(0.0f, 3.0f, 13.0f), 1); //set the position of first light (0 is reserved for ambient light)
 
-
-	uint uInstances = 200;
-
+#ifdef DEBUG
+	uint uInstances = 900;
+#else
+	uint uInstances = 1849;
+#endif
 	int nSquare = static_cast<int>(std::sqrt(uInstances));
 	m_uObjects = nSquare * nSquare;
 	uint uIndex = -1;
@@ -21,48 +23,30 @@ void Application::InitVariables(void)
 		for (int j = 0; j < nSquare; j++)
 		{
 			uIndex++;
-			m_pEntityMngr->AddEntity("Minecraft\\Cow.obj");
-			vector3 v3Position = vector3(glm::sphericalRand(34.0f).x,0,glm::sphericalRand(34.0f).z);
+			m_pEntityMngr->AddEntity("Minecraft\\Cube.obj");
+			vector3 v3Position = vector3(glm::sphericalRand(34.0f));
 			matrix4 m4Position = glm::translate(v3Position);
 			m_pEntityMngr->SetModelMatrix(m4Position);
 		}
 	}
-	m_uOctantLevels = 1;
+	m_uOctantLevels = 3;
+
 	m_pEntityMngr->Update();
+
+	Octree = new MyOctant(3, 5);
+
 }
 void Application::Update(void)
 {
 	//Update the system so it knows how much time has passed since the last call
 	m_pSystem->Update();
 
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num9)) //I am currently pressing the Num9 
-	{
-		uint uInstances = 1000;
-
-		int nSquare = static_cast<int>(std::sqrt(uInstances));
-		m_uObjects = nSquare * nSquare;
-		uint uIndex = -1;
-		for (int i = 0; i < nSquare; i++)
-		{
-			for (int j = 0; j < nSquare; j++)
-			{
-				uIndex++;
-				m_pEntityMngr->AddEntity("Minecraft\\Cow.obj");
-				vector3 v3Position = vector3(glm::sphericalRand(34.0f).x, 0, glm::sphericalRand(34.0f).z);
-				matrix4 m4Position = glm::translate(v3Position);
-				m_pEntityMngr->SetModelMatrix(m4Position);
-			}
-		}
-	}
-
-
 	//Is the ArcBall active?
 	ArcBall();
 
 	//Is the first person camera active?
 	CameraRotation();
-	
+
 	//Update Entity Manager
 	m_pEntityMngr->Update();
 
@@ -75,20 +59,27 @@ void Application::Display(void)
 	ClearScreen();
 
 	//display octree
-	//m_pRoot->Display();
-	
+	if (displayOctree)
+	{
+		if (displayLeafs)
+			Octree->DisplayLeafs();
+		else
+			Octree->Display(0);
+	}
+
+
 	// draw a skybox
 	m_pMeshMngr->AddSkyboxToRenderList();
-	
+
 	//render list call
 	m_uRenderCallCount = m_pMeshMngr->Render();
 
 	//clear the render list
 	m_pMeshMngr->ClearRenderList();
-	
+
 	//draw gui,
 	DrawGUI();
-	
+
 	//end the current frame (internally swaps the front and back buffers)
 	m_pWindow->display();
 }

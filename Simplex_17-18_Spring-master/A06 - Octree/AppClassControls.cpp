@@ -8,7 +8,7 @@ void Application::ProcessMouseMovement(sf::Event a_event)
 	sf::Vector2i window = m_pWindow->getPosition();
 	m_v3Mouse.x = static_cast<float>(mouse.x - window.x);
 	m_v3Mouse.y = static_cast<float>(mouse.y - window.y);
-	if(!m_pSystem->IsWindowFullscreen() && !m_pSystem->IsWindowBorderless())
+	if (!m_pSystem->IsWindowFullscreen() && !m_pSystem->IsWindowBorderless())
 		m_v3Mouse += vector3(-8.0f, -32.0f, 0.0f);
 	gui.io.MousePos = ImVec2(m_v3Mouse.x, m_v3Mouse.y);
 }
@@ -79,7 +79,7 @@ void Application::ProcessKeyPressed(sf::Event a_event)
 		m_bModifier = true;
 		break;
 	}
-	
+
 	//gui
 	gui.io.KeysDown[a_event.key.code] = true;
 	gui.io.KeyCtrl = a_event.key.control;
@@ -113,39 +113,52 @@ void Application::ProcessKeyReleased(sf::Event a_event)
 		break;
 	case sf::Keyboard::PageUp:
 		++m_uOctantID;
+
 		/*
 		if (m_uOctantID >= m_pRoot->GetOctantCount())
-			m_uOctantID = - 1;
+		m_uOctantID = - 1;
 		*/
 		break;
 	case sf::Keyboard::PageDown:
 		--m_uOctantID;
 		/*
 		if (m_uOctantID >= m_pRoot->GetOctantCount())
-			m_uOctantID = - 1;
+		m_uOctantID = - 1;
 		*/
 		break;
-	case sf::Keyboard::Add:
+	case sf::Keyboard::Num0:
 		if (m_uOctantLevels < 4)
 		{
 			m_pEntityMngr->ClearDimensionSetAll();
 			++m_uOctantLevels;
-			/*
-			SafeDelete(m_pRoot);
-			m_pRoot = new MyOctant(m_uOctantLevels, 5);
-			*/
+
+			Octree->KillBranches();
+			SafeDelete(Octree);
+			Octree = new MyOctant(m_uOctantLevels, 5);
 		}
 		break;
-	case sf::Keyboard::Subtract:
+	case sf::Keyboard::Num9:
 		if (m_uOctantLevels > 0)
 		{
 			m_pEntityMngr->ClearDimensionSetAll();
 			--m_uOctantLevels;
-			/*
-			SafeDelete(m_pRoot);
-			m_pRoot = new MyOctant(m_uOctantLevels, 5);
-			*/
+
+			Octree->KillBranches();
+			SafeDelete(Octree);
+			Octree = new MyOctant(m_uOctantLevels, 5);
 		}
+		break;
+	case sf::Keyboard::Return:
+		if (displayLeafs)
+			displayLeafs = false;
+		else
+			displayLeafs = true;
+		break;
+	case sf::Keyboard::BackSpace:
+		if (displayOctree)
+			displayOctree = false;
+		else
+			displayOctree = true;
 		break;
 	case sf::Keyboard::LShift:
 	case sf::Keyboard::RShift:
@@ -432,11 +445,11 @@ void Application::ProcessKeyboard(void)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 		m_pCameraMngr->MoveSideways(m_fMovementSpeed * fMultiplier);
 
-	//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
-		//m_pCameraMngr->MoveVertical(-m_fMovementSpeed * fMultiplier);
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+		m_pCameraMngr->MoveVertical(-m_fMovementSpeed * fMultiplier);
 
-	//if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
-		//m_pCameraMngr->MoveVertical(m_fMovementSpeed * fMultiplier);
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+		m_pCameraMngr->MoveVertical(m_fMovementSpeed * fMultiplier);
 #pragma endregion
 }
 //Joystick
