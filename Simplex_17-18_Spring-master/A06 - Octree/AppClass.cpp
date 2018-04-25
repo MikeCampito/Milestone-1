@@ -29,12 +29,8 @@ void Application::InitVariables(void)
 			m_pEntityMngr->SetModelMatrix(m4Position);
 		}
 	}
-	m_uOctantLevels = 3;
-
+	m_uOctantLevels = 1;
 	m_pEntityMngr->Update();
-
-	Octree = new MyOctant(3, 5);
-
 }
 void Application::Update(void)
 {
@@ -59,14 +55,7 @@ void Application::Display(void)
 	ClearScreen();
 
 	//display octree
-	if (displayOctree)
-	{
-		if (displayLeafs)
-			Octree->DisplayLeafs();
-		else
-			Octree->Display(0);
-	}
-		
+	//m_pRoot->Display();
 	
 	// draw a skybox
 	m_pMeshMngr->AddSkyboxToRenderList();

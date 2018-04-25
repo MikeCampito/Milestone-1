@@ -113,7 +113,6 @@ void Application::ProcessKeyReleased(sf::Event a_event)
 		break;
 	case sf::Keyboard::PageUp:
 		++m_uOctantID;
-		
 		/*
 		if (m_uOctantID >= m_pRoot->GetOctantCount())
 			m_uOctantID = - 1;
@@ -131,10 +130,10 @@ void Application::ProcessKeyReleased(sf::Event a_event)
 		{
 			m_pEntityMngr->ClearDimensionSetAll();
 			++m_uOctantLevels;
-
-			Octree->KillBranches();
-			SafeDelete(Octree);
-			Octree = new MyOctant(m_uOctantLevels, 5);
+			/*
+			SafeDelete(m_pRoot);
+			m_pRoot = new MyOctant(m_uOctantLevels, 5);
+			*/
 		}
 		break;
 	case sf::Keyboard::Subtract:
@@ -142,23 +141,11 @@ void Application::ProcessKeyReleased(sf::Event a_event)
 		{
 			m_pEntityMngr->ClearDimensionSetAll();
 			--m_uOctantLevels;
-
-			Octree->KillBranches();
-			SafeDelete(Octree);
-			Octree = new MyOctant(m_uOctantLevels, 5);
+			/*
+			SafeDelete(m_pRoot);
+			m_pRoot = new MyOctant(m_uOctantLevels, 5);
+			*/
 		}
-		break;
-	case sf::Keyboard::Return:
-		if (displayLeafs)
-			displayLeafs = false;
-		else
-			displayLeafs = true;
-		break;
-	case sf::Keyboard::BackSpace:
-		if (displayOctree)
-			displayOctree = false;
-		else
-			displayOctree = true;
 		break;
 	case sf::Keyboard::LShift:
 	case sf::Keyboard::RShift:
@@ -412,7 +399,7 @@ void Application::CameraRotation(float a_fSpeed)
 	}
 	//Change the Yaw and the Pitch of the camera
 	m_pCameraMngr->ChangeYaw(fAngleY * 3.0f);
-	m_pCameraMngr->ChangePitch(-fAngleX * 3.0f);
+	//m_pCameraMngr->ChangePitch(-fAngleX * 3.0f);
 	SetCursorPos(CenterX, CenterY);//Position the mouse in the center
 }
 //Keyboard
@@ -445,11 +432,11 @@ void Application::ProcessKeyboard(void)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 		m_pCameraMngr->MoveSideways(m_fMovementSpeed * fMultiplier);
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
-		m_pCameraMngr->MoveVertical(-m_fMovementSpeed * fMultiplier);
+	//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+		//m_pCameraMngr->MoveVertical(-m_fMovementSpeed * fMultiplier);
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
-		m_pCameraMngr->MoveVertical(m_fMovementSpeed * fMultiplier);
+	//if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+		//m_pCameraMngr->MoveVertical(m_fMovementSpeed * fMultiplier);
 #pragma endregion
 }
 //Joystick
