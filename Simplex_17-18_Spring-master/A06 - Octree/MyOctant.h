@@ -1,7 +1,3 @@
-/*----------------------------------------------
-Programmer: Alberto Bobadilla (labigm@gmail.com)
-Date: 2017/07
-----------------------------------------------*/
 #ifndef __MYOCTANTCLASS_H_
 #define __MYOCTANTCLASS_H_
 
@@ -9,31 +5,38 @@ Date: 2017/07
 
 namespace Simplex
 {
-
 	//System Class
 	class MyOctant
 	{
+		//static members
 		static uint m_uOctantCount; //will store the number of octants instantiated
 		static uint m_uMaxLevel;//will store the maximum level an octant can go to
 		static uint m_uIdealEntityCount; //will tell how many ideal Entities this object will contain
-
-		uint m_uID = 0; //Will store the current ID for this octant
-		uint m_uLevel = 0; //Will store the current level of the octant
-		uint m_uChildren = 0;// Number of children on the octant (either 0 or 8)
-
+		static bool m_OctreeOn;	//tells whether the Octree is on or off
+		
+		//managers
 		MeshManager* m_pMeshMngr = nullptr;//Mesh Manager singleton
 		MyEntityManager* m_pEntityMngr = nullptr; //Entity Manager Singleton
 
+		//Counts
+		uint m_uID = 0; //Will store the current ID for this octant
+		uint m_uLevel = 0; //Will store the current level of the octant
+		uint m_uChildren = 0;// Number of children on the octant (either 0 or 8)
+		
+		//Dimensions
 		vector3 m_v3Size = vector3(0.0f); //Size of the octant
 		vector3 m_v3Center = vector3(0.0f); //Will store the center point of the octant
 		vector3 m_v3Min = vector3(0.0f); //Will store the minimum vector of the octant
 		vector3 m_v3Max = vector3(0.0f); //Will store the maximum vector of the octant
 
+		//parent and child
 		MyOctant* m_pParent = nullptr;// Will store the parent of current octant
 		MyOctant* m_pChild[8];//Will store the children of the current octant
 
+		//entities
 		std::vector<uint> m_EntityList; //List of Entities under this octant (Index in Entity Manager)
 
+		//Root Octant Stuff
 		MyOctant* m_pRoot = nullptr;//Root octant
 		std::vector<MyOctant*> m_lChild; //list of all Octants (this will be applied to root only)
 		std::vector<MyOctant*> m_lChildWithObjects;	//list of all Octants that contain objects
@@ -75,13 +78,6 @@ namespace Simplex
 		OUTPUT: ---
 		*/
 		~MyOctant(void);
-		/*
-		USAGE: Changes object contents for other object's
-		ARGUMENTS:
-		- MyOctant& other -> object to swap content from
-		OUTPUT: ---
-		*/
-		void Swap(MyOctant& other);
 		/*
 		USAGE: Gets this octant's size
 		ARGUMENTS: ---
@@ -192,13 +188,26 @@ namespace Simplex
 		OUTPUT: ---
 		*/
 		void AssignIDtoEntity(void);
-
 		/*
 		USAGE: Gets the total number of octants in the world
 		ARGUMENTS: ---
 		OUTPUT: ---
 		*/
 		uint GetOctantCount(void);
+		/*
+		USAGE: Recalculates the tree
+		ARGUMENTS: ---
+		OUTPUT: ---
+		*/
+		void RefreshTree(void);
+
+		/*
+		USAGE: Toggles the tree on and off
+		ARGUMENTS: ---
+		OUTPUT: ---
+		*/
+		void ToggleOctree(void);
+
 
 	private:
 		/*
