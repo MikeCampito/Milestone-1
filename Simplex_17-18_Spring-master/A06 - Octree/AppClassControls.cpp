@@ -162,6 +162,16 @@ void Application::ProcessKeyReleased(sf::Event a_event)
 		else
 			displayLeafs = true;
 		break;
+	case sf::Keyboard::T:
+		for (int j = 0; j < 70; j++)
+		{
+			m_pEntityMngr->AddEntity("Minecraft\\Cow.obj");
+			vector3 v3Position = vector3(glm::sphericalRand(34.0f));
+			matrix4 m4Position = glm::translate(v3Position);
+			m_pEntityMngr->SetModelMatrix(m4Position);
+			m_pEntityMngr->UsePhysicsSolver();
+		}
+		break;
 	case sf::Keyboard::BackSpace:
 		if (displayOctree)
 			displayOctree = false;
