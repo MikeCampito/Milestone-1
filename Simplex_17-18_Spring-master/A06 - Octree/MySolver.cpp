@@ -146,11 +146,13 @@ void MySolver::Update(void)
 {
 	ApplyForce(vector3(0.0f, -0.035f, 0.0f));
 	m_v3Velocity += m_v3Acceleration;
-	if (m_v3Position.x > 35 || m_v3Position.x < -35) {
-		m_v3Velocity.x *= -1;
-	}
-	if (m_v3Position.z > 35 || m_v3Position.z < -35) {
-		m_v3Velocity.z *= -1;
+	if (net == false) {
+		if (m_v3Position.x > 35 || m_v3Position.x < -35) {
+			m_v3Velocity.x *= -1;
+		}
+		if (m_v3Position.z > 35 || m_v3Position.z < -35) {
+			m_v3Velocity.z *= -1;
+		}
 	}
 
 	float fMaxVelocity = 5.0f;
