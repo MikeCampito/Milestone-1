@@ -4,8 +4,8 @@ void Application::InitVariables(void)
 {
 	//Set the position and target of the camera
 	m_pCameraMngr->SetPositionTargetAndUp(
-		vector3(0.0f, 20.0f, 100.0f), //Position
-		vector3(0.0f, 19.5f, 99.0f),	//Target
+		vector3(0.0f, 2.0f, 100.0f), //Position
+		vector3(0.0f, 2.0f, 99.0f),	//Target
 		AXIS_Y);					//Up
 
 	m_pLightMngr->SetPosition(vector3(0.0f, 3.0f, 13.0f), 1); //set the position of first light (0 is reserved for ambient light)
@@ -114,6 +114,13 @@ void Simplex::Application::ThrowNet(void)
 	vector3 launchVector = this->m_pCameraMngr->GetForward();
 	launchVector = launchVector * 100.0f;
 	std::cout << "(" << launchVector.x << ", " << launchVector.y << ", " << launchVector.z << ")" << std::endl;
+
+	for (int i = 0; i < Octree->GetOctantsWithChildren().size(); i++) {
+		m_pEntityMngr->GetEntity(netID)->AddDimension(Octree->GetOctantsWithChildren().at(i)->getM_UID());
+	}
+
+
+
 	m_pEntityMngr->ApplyForce(launchVector, netID);
 	
 	
@@ -121,15 +128,39 @@ void Simplex::Application::ThrowNet(void)
 
 void Simplex::Application::RecallNet(void) {
 	printf("Net recalled");
-	vector3 recallPos = this->m_pCameraMngr->GetPosition();
-	vector3 recallVector = recallPos - m_pEntityMngr->GetEntity(netID)->GetPosition();
+	this->recalling = true;
+	this->recallReturnPosition = this->m_pCameraMngr->GetPosition();
+	vector3 recallVector = recallReturnPosition - m_pEntityMngr->GetEntity(netID)->GetPosition();
 	m_pEntityMngr->ApplyForce(recallVector, netID);
 	
 }
 
 void Simplex::Application::catchCows(void) {
-	std::cout << m_pEntityMngr->GetEntity(netID)->GetCollidingCount() << std::endl;
-	if (m_pEntityMngr->GetEntity(netID)->GetCollidingCount() > 0) {
-		printf("Colliding!");
+	if (recalling) {
+		if (m_pEntityMngr->GetEntity(netID)->GetCollidingCount() > 0) {
+			Simplex::MyRigidBody::PRigidBody* cows = m_pEntityMngr->GetEntity(netID)->GetColliderArray();
+			for (int i = 0; i < sizeof(cows); i += sizeof(Simplex::MyRigidBody::PRigidBody)) {
+				for (int j = 0; j < m_pEntityMngr->GetEntityCount(); j += sizeof(MyEntity)) {
+					printf("Pulling cow!");
+					vector3 recallVector = recallReturnPosition - m_pEntityMngr->GetEntity(j)->GetPosition();
+					m_pEntityMngr->ApplyForce(recallVector, j);
+					pulledCows.push_back(j);
+				}
+			}
+		}
+	}
+	float distanceSqrd = pow((recallReturnPosition.x - m_pEntityMngr->GetEntity()->GetPosition().x), 2) + pow((recallReturnPosition.z - m_pEntityMngr->GetEntity()->GetPosition().z), 2);
+	if (distanceSqrd <= 4) {
+		printf("Net Caught!");
+		m_pEntityMngr->RemoveEntity(netID);
+		this->recalling = false;
+		for (int i = 0; i < pulledCows.size(); i++) {
+			m_pEntityMngr->RemoveEntity(pulledCows.at(i));
+			points++;
+			std::cout << std::endl;
+			std::cout << "You've scored " << points << " points!" << std::endl;
+			std::cout << std::endl;
+		}
+		pulledCows.clear();
 	}
 }

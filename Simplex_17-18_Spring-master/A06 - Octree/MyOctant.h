@@ -208,7 +208,8 @@ namespace Simplex
 		*/
 		void ToggleOctree(void);
 
-
+		std::vector<MyOctant*> GetOctantsWithChildren(void);
+		uint getM_UID(void);
 	private:
 		/*
 		USAGE: Deallocates member fields

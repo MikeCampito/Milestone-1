@@ -27,10 +27,15 @@ namespace Simplex
 		bool displayOctree = true;
 		bool displayLeafs = false;
 
-		//Net throw variables
+		//Net throwing and cow catching variables
 		bool netThrown = false;
+		bool recalling = false;
 		vector3 netSize = vector3(50, 50, 50);
 		uint netID;
+		vector3 recallReturnPosition;
+		std::vector<uint> pulledCows = std::vector<uint>();
+		int points = 0;
+
 
 
 	private:
