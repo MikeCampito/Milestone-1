@@ -23,18 +23,27 @@ void Application::InitVariables(void)
 		for (int j = 0; j < nSquare; j++)
 		{
 			uIndex++;
-			m_pEntityMngr->AddEntity("Minecraft\\Cube.obj");
+			m_pEntityMngr->AddEntity("Minecraft\\Cow.obj");
 			vector3 v3Position = vector3(glm::sphericalRand(34.0f));
 			matrix4 m4Position = glm::translate(v3Position);
 			m_pEntityMngr->SetModelMatrix(m4Position);
+				m_pEntityMngr->UsePhysicsSolver();
 		}
 	}
+	/*for (int i = 0; i < 100; i++)
+	{
+		m_pEntityMngr->AddEntity("Minecraft\\Cube.obj", "Cube_" + std::to_string(i));
+		vector3 v3Position = vector3(glm::sphericalRand(12.0f));
+		v3Position.y = 0.0f;
+		matrix4 m4Position = glm::translate(v3Position);
+		m_pEntityMngr->SetModelMatrix(m4Position);
+		m_pEntityMngr->UsePhysicsSolver();
+		//m_pEntityMngr->SetMass(i+1);
+	}*/
 	m_uOctantLevels = 3;
-
 	m_pEntityMngr->Update();
 
 	Octree = new MyOctant(3, 5);
-
 }
 void Application::Update(void)
 {

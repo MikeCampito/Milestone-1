@@ -293,6 +293,7 @@ void Simplex::MyEntity::ApplyForce(vector3 a_v3Force)
 }
 void Simplex::MyEntity::Update(void)
 {
+	std::cout << m_bUsePhysicsSolver;
 	if (m_bUsePhysicsSolver)
 	{
 		m_pSolver->Update();

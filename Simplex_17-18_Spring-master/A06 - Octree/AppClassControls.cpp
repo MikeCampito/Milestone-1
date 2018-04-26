@@ -451,11 +451,11 @@ void Application::ProcessKeyboard(void)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 		m_pCameraMngr->MoveSideways(m_fMovementSpeed * fMultiplier);
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
-		m_pCameraMngr->MoveVertical(-m_fMovementSpeed * fMultiplier);
+	//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+		//m_pCameraMngr->MoveVertical(-m_fMovementSpeed * fMultiplier);
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
-		m_pCameraMngr->MoveVertical(m_fMovementSpeed * fMultiplier);
+	//if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+		//m_pCameraMngr->MoveVertical(m_fMovementSpeed * fMultiplier);
 #pragma endregion
 }
 //Joystick

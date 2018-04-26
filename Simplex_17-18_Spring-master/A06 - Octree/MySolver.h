@@ -15,8 +15,8 @@ class MySolver
 	vector3 m_v3Acceleration = ZERO_V3; //Acceleration of the MySolver
 	vector3 m_v3Position = ZERO_V3; //Position of the MySolver
 	vector3 m_v3Velocity = ZERO_V3; //Velocity of the MySolver
-	bool net = false;
 	float m_fMass = 1.0f; //Mass of the solver
+	bool net = false;
 public:
 	/*
 	USAGE: Constructor
@@ -112,7 +112,6 @@ public:
 	OUTPUT: ---
 	*/
 	void ResolveCollision(MySolver* a_pOther);
-	void SetNet(bool net1);
 private:
 	/*
 	Usage: Deallocates member fields

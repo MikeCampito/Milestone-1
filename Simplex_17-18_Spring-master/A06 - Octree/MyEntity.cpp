@@ -293,13 +293,14 @@ void Simplex::MyEntity::ApplyForce(vector3 a_v3Force)
 }
 void Simplex::MyEntity::Update(void)
 {
+	std::cout << m_bUsePhysicsSolver;
 	if (m_bUsePhysicsSolver)
 	{
 		m_pSolver->Update();
-		vector3 dirvec = glm::normalize(m_pSolver->GetVelocity());
-		float angle = std::atan2(dirvec.z, dirvec.x);
-		matrix4 toWorld = glm::rotate(angle, vector3(0, 1, 0));
-		toWorld = glm::translate(toWorld, m_pSolver->GetPosition());
+		//vector3 dirvec = m_pSolver->GetVelocity();
+		//float angle = std::atan2(dirvec.z, dirvec.x);
+		//matrix4 toWorld = glm::rotate(angle, vector3(0, 1, 0));
+		matrix4 toWorld = glm::translate(m_pSolver->GetPosition());
 		SetModelMatrix(toWorld);
 	}
 }

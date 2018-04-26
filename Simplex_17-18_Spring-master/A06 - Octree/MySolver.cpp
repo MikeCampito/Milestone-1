@@ -85,7 +85,7 @@ vector3 RoundSmallVelocity(vector3 a_v3Velocity, float minVelocity = 0.01f)
 	}
 	return a_v3Velocity;
 }
-void MySolver::Update(void)
+/*void MySolver::Update(void)
 {
 	ApplyForce(vector3(0.0f, -0.035f, 0.0f));
 
@@ -98,19 +98,25 @@ void MySolver::Update(void)
 	m_v3Velocity = RoundSmallVelocity(m_v3Velocity, 0.028f);
 
 	m_v3Position += m_v3Velocity;
-			
-	if (m_v3Position.y <= 0 && net==false)
-	{
-		m_v3Position.y = 0;
-		m_v3Velocity.y = 0;
+	if(net == false) {
+		if (m_v3Position.y <= 0)
+		{
+			m_v3Position.y = 0;
+			m_v3Velocity.y = 0;
+		}
 	}
 
+	
 	m_v3Acceleration = ZERO_V3;
 }
-void MySolver::ResolveCollision(MySolver* a_pOther)
+bool MySolver::ResolveCollision(MySolver* a_pOther)
 {
 	float fMagThis = glm::length(m_v3Velocity);
 	float fMagOther = glm::length(m_v3Velocity);
+
+	if (a_pOther->net == true) {
+		return true;
+	}
 
 	if (fMagThis > 0.015f || fMagOther > 0.015f)
 	{
@@ -127,7 +133,45 @@ void MySolver::ResolveCollision(MySolver* a_pOther)
 		ApplyForce(v3Direction);
 		a_pOther->ApplyForce(-v3Direction);
 	}
+}*/
+void MySolver::Update(void)
+{
+	ApplyForce(vector3(0.0f, -0.035f, 0.0f));
+	m_v3Velocity += m_v3Acceleration;
+
+	float fMaxVelocity = 5.0f;
+	m_v3Velocity = CalculateMaxVelocity(m_v3Velocity, fMaxVelocity);
+
+	ApplyFriction(0.1f);
+	m_v3Velocity = RoundSmallVelocity(m_v3Velocity, 0.028f);
+
+	m_v3Position += m_v3Velocity;
+
+	if (m_v3Position.y <= 0)
+	{
+		m_v3Position.y = 0;
+		m_v3Velocity.y = 0;
+	}
+
+	m_v3Acceleration = ZERO_V3;
 }
-void MySolver::SetNet(bool net1) {
-	net = net1;
+void MySolver::ResolveCollision(MySolver* a_pOther)
+{
+	float fMagThis = glm::length(m_v3Velocity);
+	float fMagOther = glm::length(m_v3Velocity);
+	if (fMagThis > 0.015f || fMagOther > 0.015f)
+	{
+		//a_pOther->ApplyForce(GetVelocity());
+		ApplyForce(-m_v3Velocity);
+		a_pOther->ApplyForce(m_v3Velocity);
+	}
+	else
+	{
+		vector3 v3Direction = m_v3Position - a_pOther->m_v3Position;
+		if (glm::length(v3Direction) != 0)
+			v3Direction = glm::normalize(v3Direction);
+		v3Direction *= 0.04f;
+		ApplyForce(v3Direction);
+		a_pOther->ApplyForce(-v3Direction);
+	}
 }
