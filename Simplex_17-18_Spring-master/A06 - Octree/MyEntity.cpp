@@ -296,10 +296,15 @@ void Simplex::MyEntity::Update(void)
 	if (m_bUsePhysicsSolver)
 	{
 		m_pSolver->Update();
-		//vector3 dirvec = m_pSolver->GetVelocity();
-		//float angle = std::atan2(dirvec.z, dirvec.x);
-		//matrix4 toWorld = glm::rotate(angle, vector3(0, 1, 0));
-		matrix4 toWorld = glm::translate(m_pSolver->GetPosition());
+		vector3 dirvec = m_pSolver->GetVelocity();
+		matrix4 toWorld;
+		std::cout << dirvec.x << " " << dirvec.y << " " << dirvec.z;
+		if (dirvec.x + dirvec.y + dirvec.z > 0) {
+			dirvec = glm::normalize(dirvec);
+		}
+		float angle = std::atan2(dirvec.z, dirvec.x);
+		
+		toWorld = glm::translate(toWorld, m_pSolver->GetPosition());
 		SetModelMatrix(toWorld);
 	}
 }
