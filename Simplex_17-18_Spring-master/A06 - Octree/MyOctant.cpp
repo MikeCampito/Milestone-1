@@ -487,6 +487,16 @@ void Simplex::MyOctant::ToggleOctree(void)
 	}
 }
 
+std::vector<MyOctant*> Simplex::MyOctant::GetOctantsWithChildren(void)
+{
+	return this->m_lChildWithObjects;
+}
+
+uint Simplex::MyOctant::getM_UID(void)
+{
+	return this->m_uID;
+}
+
 void Simplex::MyOctant::Release(void)
 {
 	//release data
