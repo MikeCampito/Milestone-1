@@ -27,10 +27,10 @@ namespace Simplex
 		bool displayOctree = true;
 		bool displayLeafs = false;
 
-
 		//Net throw variables
 		bool netThrown = false;
 		vector3 netSize = vector3(50, 50, 50);
+		uint netID;
 
 
 	private:
@@ -184,6 +184,8 @@ namespace Simplex
 		/*
 		*/
 		void ThrowNet(void);
+		void RecallNet();
+		void catchCows();
 #pragma endregion
 
 #pragma region Application Controls

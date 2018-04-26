@@ -4,14 +4,14 @@ void Application::InitVariables(void)
 {
 	//Set the position and target of the camera
 	m_pCameraMngr->SetPositionTargetAndUp(
-		vector3(0.0f, 2.0f, 100.0f), //Position
-		vector3(0.0f, 2.0f, 99.0f),	//Target
+		vector3(0.0f, 20.0f, 100.0f), //Position
+		vector3(0.0f, 19.5f, 99.0f),	//Target
 		AXIS_Y);					//Up
 
 	m_pLightMngr->SetPosition(vector3(0.0f, 3.0f, 13.0f), 1); //set the position of first light (0 is reserved for ambient light)
 
 #ifdef DEBUG
-	uint uInstances = 900;
+	uint uInstances = 100;
 #else
 	uint uInstances = 1849;
 #endif
@@ -61,6 +61,9 @@ void Application::Update(void)
 
 	//Add objects to render list
 	m_pEntityMngr->AddEntityToRenderList(-1, true);
+
+	//Catch cows
+	this->catchCows();
 }
 void Application::Display(void)
 {
@@ -104,6 +107,29 @@ void Simplex::Application::ThrowNet(void)
 	printf("Net Thrown");
 	vector3 startPos = this->m_pCameraMngr->GetPosition();
 	m_pEntityMngr->AddEntity("Minecraft\\Net.obj");
-	matrix4 m4Position = glm::translate(startPos);
+	this->netID = m_pEntityMngr->GetEntityIndex(m_pEntityMngr->GetUniqueID());
+	m_pEntityMngr->UsePhysicsSolver(true, netID);
+	matrix4 m4Position = this->m_pCameraMngr->GetCamera()->GetCameraPlane();
 	m_pEntityMngr->SetModelMatrix(m4Position);
+	vector3 launchVector = this->m_pCameraMngr->GetForward();
+	launchVector = launchVector * 100.0f;
+	std::cout << "(" << launchVector.x << ", " << launchVector.y << ", " << launchVector.z << ")" << std::endl;
+	m_pEntityMngr->ApplyForce(launchVector, netID);
+	
+	
+}
+
+void Simplex::Application::RecallNet(void) {
+	printf("Net recalled");
+	vector3 recallPos = this->m_pCameraMngr->GetPosition();
+	vector3 recallVector = recallPos - m_pEntityMngr->GetEntity(netID)->GetPosition();
+	m_pEntityMngr->ApplyForce(recallVector, netID);
+	
+}
+
+void Simplex::Application::catchCows(void) {
+	std::cout << m_pEntityMngr->GetEntity(netID)->GetCollidingCount() << std::endl;
+	if (m_pEntityMngr->GetEntity(netID)->GetCollidingCount() > 0) {
+		printf("Colliding!");
+	}
 }
