@@ -4,13 +4,8 @@ void Application::InitVariables(void)
 {
 	//Set the position and target of the camera
 	m_pCameraMngr->SetPositionTargetAndUp(
-<<<<<<< HEAD
 		vector3(0.0f, 2.0f, 10.0f), //Position
 		vector3(0.0f, 2.0f, 11.0f),	//Target
-=======
-		vector3(0.0f, 2.0f, 100.0f), //Position
-		vector3(0.0f, 2.0f, 99.0f),	//Target
->>>>>>> eb0e29b4d39ba186b0cab49f8c57cc5231466cff
 		AXIS_Y);					//Up
 
 	m_pLightMngr->SetPosition(vector3(0.0f, 3.0f, 13.0f), 1); //set the position of first light (0 is reserved for ambient light)
@@ -124,10 +119,10 @@ void Simplex::Application::ThrowNet(void)
 	matrix4 m4Position = this->m_pCameraMngr->GetCamera()->GetCameraPlane();
 	m_pEntityMngr->SetModelMatrix(m4Position);
 	vector3 launchVector = this->m_pCameraMngr->GetForward();
-<<<<<<< HEAD
+
 	m_pEntityMngr->GetEntity(this->netID)->GetSolver()->SetNet(true);
 	
-=======
+
 	launchVector = launchVector * 100.0f;
 	std::cout << "(" << launchVector.x << ", " << launchVector.y << ", " << launchVector.z << ")" << std::endl;
 
@@ -137,56 +132,56 @@ void Simplex::Application::ThrowNet(void)
 
 
 
->>>>>>> eb0e29b4d39ba186b0cab49f8c57cc5231466cff
+
 	m_pEntityMngr->ApplyForce(launchVector, netID);
 	
 	
 }
 
 void Simplex::Application::RecallNet(void) {
-<<<<<<< HEAD
-	vector3 recallPos = this->m_pCameraMngr->GetPosition();
-	vector3 recallVector = recallPos - m_pEntityMngr->GetEntity(netID)->GetPosition();
-=======
+
+	//vector3 recallPos = this->m_pCameraMngr->GetPosition();
+	//vector3 recallVector = recallPos - m_pEntityMngr->GetEntity(netID)->GetPosition();
+
 	printf("Net recalled");
 	this->recalling = true;
 	this->recallReturnPosition = this->m_pCameraMngr->GetPosition();
 	vector3 recallVector = recallReturnPosition - m_pEntityMngr->GetEntity(netID)->GetPosition();
->>>>>>> eb0e29b4d39ba186b0cab49f8c57cc5231466cff
+
 	m_pEntityMngr->ApplyForce(recallVector, netID);
 	
 }
 
 void Simplex::Application::catchCows(void) {
-<<<<<<< HEAD
+
 	if (m_pEntityMngr->GetEntity(netID)->GetCollidingCount() > 0) {
-=======
-	if (recalling) {
-		if (m_pEntityMngr->GetEntity(netID)->GetCollidingCount() > 0) {
-			Simplex::MyRigidBody::PRigidBody* cows = m_pEntityMngr->GetEntity(netID)->GetColliderArray();
-			for (int i = 0; i < sizeof(cows); i += sizeof(Simplex::MyRigidBody::PRigidBody)) {
-				for (int j = 0; j < m_pEntityMngr->GetEntityCount(); j += sizeof(MyEntity)) {
-					printf("Pulling cow!");
-					vector3 recallVector = recallReturnPosition - m_pEntityMngr->GetEntity(j)->GetPosition();
-					m_pEntityMngr->ApplyForce(recallVector, j);
-					pulledCows.push_back(j);
+
+		if (recalling) {
+			if (m_pEntityMngr->GetEntity(netID)->GetCollidingCount() > 0) {
+				Simplex::MyRigidBody::PRigidBody* cows = m_pEntityMngr->GetEntity(netID)->GetColliderArray();
+				for (int i = 0; i < sizeof(cows); i += sizeof(Simplex::MyRigidBody::PRigidBody)) {
+					for (int j = 0; j < m_pEntityMngr->GetEntityCount(); j += sizeof(MyEntity)) {
+						printf("Pulling cow!");
+						vector3 recallVector = recallReturnPosition - m_pEntityMngr->GetEntity(j)->GetPosition();
+						m_pEntityMngr->ApplyForce(recallVector, j);
+						pulledCows.push_back(j);
+					}
 				}
 			}
 		}
-	}
-	float distanceSqrd = pow((recallReturnPosition.x - m_pEntityMngr->GetEntity()->GetPosition().x), 2) + pow((recallReturnPosition.z - m_pEntityMngr->GetEntity()->GetPosition().z), 2);
-	if (distanceSqrd <= 4) {
-		printf("Net Caught!");
-		m_pEntityMngr->RemoveEntity(netID);
-		this->recalling = false;
-		for (int i = 0; i < pulledCows.size(); i++) {
-			m_pEntityMngr->RemoveEntity(pulledCows.at(i));
-			points++;
-			std::cout << std::endl;
-			std::cout << "You've scored " << points << " points!" << std::endl;
-			std::cout << std::endl;
+		float distanceSqrd = pow((recallReturnPosition.x - m_pEntityMngr->GetEntity()->GetPosition().x), 2) + pow((recallReturnPosition.z - m_pEntityMngr->GetEntity()->GetPosition().z), 2);
+		if (distanceSqrd <= 4) {
+			printf("Net Caught!");
+			m_pEntityMngr->RemoveEntity(netID);
+			this->recalling = false;
+			for (int i = 0; i < pulledCows.size(); i++) {
+				m_pEntityMngr->RemoveEntity(pulledCows.at(i));
+				points++;
+				std::cout << std::endl;
+				std::cout << "You've scored " << points << " points!" << std::endl;
+				std::cout << std::endl;
+			}
+			pulledCows.clear();
 		}
-		pulledCows.clear();
->>>>>>> eb0e29b4d39ba186b0cab49f8c57cc5231466cff
 	}
 }
