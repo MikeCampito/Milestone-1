@@ -5,9 +5,12 @@ void MySolver::Init(void)
 {
 	m_v3Acceleration = ZERO_V3;
 	m_v3Position = ZERO_V3;
-	m_v3Velocity = ZERO_V3;
+	m_v3Velocity = vector3(glm::sphericalRand(0.25f));
 	m_fMass = 1.0f;
+	net = false;
 }
+
+
 void MySolver::Swap(MySolver& other)
 {
 	std::swap(m_v3Acceleration, other.m_v3Acceleration);
@@ -77,6 +80,11 @@ vector3 CalculateMaxVelocity(vector3 a_v3Velocity, float maxVelocity)
 	}
 	return a_v3Velocity;
 }
+
+void MySolver::SetNet(bool isNet) {
+	net = isNet;
+}
+
 vector3 RoundSmallVelocity(vector3 a_v3Velocity, float minVelocity = 0.01f)
 {
 	if (glm::length(a_v3Velocity) < minVelocity)
@@ -138,11 +146,19 @@ void MySolver::Update(void)
 {
 	ApplyForce(vector3(0.0f, -0.035f, 0.0f));
 	m_v3Velocity += m_v3Acceleration;
+	if (m_v3Position.x > 35 || m_v3Position.x < -35) {
+		m_v3Velocity.x *= -1;
+	}
+	if (m_v3Position.z > 35 || m_v3Position.z < -35) {
+		m_v3Velocity.z *= -1;
+	}
 
 	float fMaxVelocity = 5.0f;
 	m_v3Velocity = CalculateMaxVelocity(m_v3Velocity, fMaxVelocity);
 
-	ApplyFriction(0.05f);
+	if (net) {
+		ApplyFriction(0.05f);
+	}
 	m_v3Velocity = RoundSmallVelocity(m_v3Velocity, 0.028f);
 
 	m_v3Position += m_v3Velocity;
@@ -170,7 +186,7 @@ void MySolver::ResolveCollision(MySolver* a_pOther)
 		vector3 v3Direction = m_v3Position - a_pOther->m_v3Position;
 		if (glm::length(v3Direction) != 0)
 			v3Direction = glm::normalize(v3Direction);
-		v3Direction *= 0.04f;
+		v3Direction *= 0.4f;
 		ApplyForce(v3Direction);
 		a_pOther->ApplyForce(-v3Direction);
 	}

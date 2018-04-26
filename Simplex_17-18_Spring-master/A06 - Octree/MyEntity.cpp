@@ -298,7 +298,6 @@ void Simplex::MyEntity::Update(void)
 		m_pSolver->Update();
 		vector3 dirvec = m_pSolver->GetVelocity();
 		matrix4 toWorld;
-		std::cout << dirvec.x << " " << dirvec.y << " " << dirvec.z;
 		if (dirvec.x + dirvec.y + dirvec.z > 0) {
 			dirvec = glm::normalize(dirvec);
 		}

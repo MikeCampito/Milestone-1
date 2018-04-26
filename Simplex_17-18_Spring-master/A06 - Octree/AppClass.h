@@ -26,6 +26,7 @@ namespace Simplex
 		MyOctant* Octree = nullptr;	//octree for Spatial Optimization
 		bool displayOctree = true;
 		bool displayLeafs = false;
+		float timer = 0.0;
 
 		//Net throw variables
 		bool netThrown = false;

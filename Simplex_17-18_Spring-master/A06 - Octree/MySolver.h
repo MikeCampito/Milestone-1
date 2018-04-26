@@ -24,6 +24,7 @@ public:
 	OUTPUT: object instance
 	*/
 	MySolver(void);
+
 	/*
 	USAGE: Copy Constructor
 	ARGUMENTS: object to copy
@@ -48,6 +49,8 @@ public:
 	OUTPUT: ---
 	*/
 	void Swap(MySolver& other);
+
+	void SetNet(bool isNet);
 
 	/*
 	USAGE: Sets the position of the solver
